@@ -1,5 +1,5 @@
 {
-  "name": "chatgpt-plugin",
+  "name": "chatgpt-footprint",
   "version": "0.1",
   "description": "ChatGPT (carbon) footprint plugin.",
   "private": true,
