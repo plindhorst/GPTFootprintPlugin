@@ -14,7 +14,11 @@
   "icons": {
     "128": "icon-128.png"
   },
-  "permissions": ["activeTab"],
+  "background": {
+    "js": ["src/pages/background/index.ts"],
+    "persistent": false
+  },
+  "permissions": ["activeTab", "scripting"],
   "content_scripts": [
     {
       "matches": ["http://chatgpt.com/*", "https://chatgpt.com/*"],
@@ -25,7 +29,12 @@
   "devtools_page": "src/pages/devtools/index.html",
   "web_accessible_resources": [
     {
-      "resources": ["contentStyle.css", "icon-128.png", "icon-32.png"],
+      "resources": [
+        "src/pages/popup/index.html",
+        "contentStyle.css",
+        "icon-128.png",
+        "icon-32.png"
+      ],
       "matches": []
     }
   ]

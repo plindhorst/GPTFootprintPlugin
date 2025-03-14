@@ -7,6 +7,8 @@
     "build": "vite build --config vite.config.chrome.ts",
     "build:chrome": "vite build --config vite.config.chrome.ts",
     "build:firefox": "vite build --config vite.config.firefox.ts",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix .",
     "dev": "nodemon --config nodemon.chrome.json",
     "dev:chrome": "nodemon --config nodemon.chrome.json",
     "dev:firefox": "nodemon --config nodemon.firefox.json"
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.32",
+    "@stylistic/eslint-plugin": "^4.2.0",
     "@tailwindcss/vite": "^4.0.8",
     "@types/chrome": "^0.0.304",
     "@types/node": "^22.13.9",
@@ -31,13 +34,17 @@
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-mdx": "^3.2.0",
+    "eslint-plugin-perfectionist": "^4.10.1",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "fs-extra": "^11.3.0",
     "nodemon": "^3.1.9",
     "tailwindcss": "^4.0.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
+    "typescript-eslint": "^8.26.1",
     "vite": "^6.1.0",
     "vite-tsconfig-paths": "^5.1.4"
   }

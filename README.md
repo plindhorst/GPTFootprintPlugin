@@ -10,7 +10,7 @@
 - [Features](#features)
 - [Usage](#usage)
   - [Getting Started](#gettingStarted)
-  - [Customization](#customization)
+  - [Customisation](#customisation)
   - [Publish](#publish)
 - [Tech Docs](#tech)
 - [Credit](#credit)
@@ -76,12 +76,12 @@ For Firefox
 3. Click - Load temporary Add-on
 4. Select - any file in `dist_firefox` folder (i.e. `manifest.json`) in this project (after dev or build)
 
-### Customization <a name="customization" />
+### Customisation <a name="customisation" />
 
 #### Adding / removing pages
 
 The template includes source code for **all** of the extension pages (i.e. New Tab, Dev Tools, Popup, Side Panel
-etc.). You will likely have to customize it to fit your needs.
+etc.). You will likely have to customise it to fit your needs.
 
 E.g. you don't want the newtab page to activate whenever you open a new tab:
 
@@ -137,9 +137,9 @@ to use it in combination with Tailwind CSS. **Feel free to delete them**.
 
 Tailwind can be configured, themed and extended according to the [docs](https://tailwindcss.com/docs/theme).
 
-#### Internationalization (i18n)
+#### Internationalisation (i18n)
 
-To enable internationalization set the `localize` flag in the `vite.config.base.ts` to `true`.
+To enable internationalisation set the `localise` flag in the `vite.config.base.ts` to `true`.
 
 The template includes a directory `locales` with a basic setup for english i18n. Enabling i18n
 will pull the name and description for your extension from the english translation files instead
@@ -149,20 +149,20 @@ Follow the instructions in the [official docs](https://developer.chrome.com/docs
 to add other translations and retrieve them in the extension.
 
 If you don't need i18n you can ignore the `locales` directory until you need it, as it won't
-be copied into the build folder unless the `localize` flag is set to `true`.
+be copied into the build folder unless the `localise` flag is set to `true`.
 
-### Publish your extension to the CWS<a name="publish" />
+### Publish your extension <a name="publish" />
 
 To upload an extension to the Chrome store you have to pack (zip) it and then upload it to your item
 in the Chrome Web Store.
 
 This repo includes a Github Action Workflow to create a
-[optimized prod build and the zip file](https://github.com/JohnBra/vite-web-extension/actions/workflows/ci.yml).
+[optimised prod build and the zip file](https://github.com/JohnBra/vite-web-extension/actions/workflows/ci.yml).
 
 To run the workflow do the following:
 
 1. Go to the **"Actions"** tab in your forked repository from this template
-2. In the left sidebar click on **"Build and Zip Chrome Extension"**
+2. In the left sidebar click on **"Build and zip Chrome extension"**
 3. Click on **"Run Workflow"** and select the main branch, then **"Run Workflow"**
 4. Refresh the page and click the most recent run
 5. In the summary page **"Artifacts"** section click on the generated **"vite-web-extension-chrome"**

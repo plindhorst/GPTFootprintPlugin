@@ -1,11 +1,12 @@
-declare module '*.svg' {
-  import React = require('react');
-  export const ReactComponent: React.SFC<React.SVGProps<SVGSVGElement>>;
+import { SFC, SVGProps } from "react";
+
+declare module "*.svg" {
+  export const ReactComponent: SFC<SVGProps<SVGSVGElement>>;
   const src: string;
   export default src;
 }
 
-declare module '*.json' {
+declare module "*.json" {
   const content: string;
   export default content;
 }
