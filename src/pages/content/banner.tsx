@@ -1,27 +1,13 @@
+import { EXTENSION_PREFIX } from "@/assets/constants";
 import { useEffect, useRef } from "react";
-
-import "./style.css";
-
+import "@/assets/styles/tailwind.css";
 import { createRoot } from "react-dom/client";
-// const div = document.createElement('div');
-// div.id = '__plugin';
-// document.body.appendChild(div);
 
-// const Announcement = () => (
-//   <div className="mb-3 z-[100] w-full text-center mx-auto empty:hidden">
-//     <div className="inline-flex rounded-xl border border-gray-100 dark:border-gray-700">
-//       <div className="flex items-center justify-center gap-4 px-4 py-3 text-sm text-yellow-300">
-//         Plugin has been loaded.
-//         {" "}
-//         <p className="text-token-text-secondary">More info...</p>
-//       </div>
-//     </div>
-//   </div>
-// );
+const bannerId = `${EXTENSION_PREFIX}-banner`;
 
 const pluginClass = "bottom-full left-0 right-0 z-20";
 
-const Announcement2 = () => {
+const Banner = () => {
   const handleClick = () => {
     chrome.runtime.sendMessage("openExtension");
   };
@@ -83,41 +69,53 @@ const _findParent = () => {
   return lastChat;
 };
 
-const observer = new MutationObserver((mutations, observer) => {
-  const container = findAdjacent();
+// let lastURL = window.location.href;
 
-  if (container && !document.getElementById("plugin_announcement")) {
+const observer = new MutationObserver(() => {
+  injectPluginDiv();
+});
+
+const injectPluginDiv = () => {
+  // const currentURL = window.location.href;
+
+  // prevent re-injecting
+  if (document.getElementById(bannerId)) {
+    return;
+  }
+
+  // lastURL = currentURL;
+
+  const container = findAdjacent();
+  if (container) {
     const pluginDiv = document.createElement("div");
     pluginDiv.className = pluginClass;
-    pluginDiv.id = "plugin_announcement";
+    pluginDiv.id = bannerId;
 
     container.insertAdjacentElement("beforebegin", pluginDiv);
-    createRoot(pluginDiv).render(<Announcement2 />);
-
-    // const button = document.getElementById("plugin_announcement").querySelector("button");
-    // if (button) {
-    //   button.addEventListener("click", () => {
-    //     chrome.runtime.sendMessage("openExtension");
-    //   });
-    // }
-
-    observer.disconnect();
+    createRoot(pluginDiv).render(<Banner />);
   }
-});
+};
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-// const rootContainer = document.querySelector('#__plugin');
-// if (!rootContainer) throw new Error("Can't find Content root element");
-// const root = createRoot(rootContainer);
-// root.render(
-//   <div className='absolute bottom-0 left-0 text-lg text-black bg-amber-400 z-50'  >
-//     content script <span className='your-class'>loaded</span>
-//   </div>
-// );
+// track history-based URL changes
+const originalPushState = history.pushState;
+const originalReplaceState = history.replaceState;
+
+history.pushState = (...args) => {
+  originalPushState.apply(this, args);
+  injectPluginDiv();
+};
+
+history.replaceState = (...args) => {
+  originalReplaceState.apply(this, args);
+  injectPluginDiv();
+};
+
+window.addEventListener("popstate", injectPluginDiv);
 
 try {
-  console.log("content script loaded");
+  console.log("Banner loaded");
 } catch (e) {
   console.error(e);
 }

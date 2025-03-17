@@ -29,6 +29,12 @@ export const baseManifest = {
 
 export const baseBuildOptions: BuildOptions = {
   emptyOutDir: !isDev,
+  rollupOptions: {
+    input: {},
+    output: {
+      entryFileNames: chunk => `src/pages/${chunk.name}/index.js`
+    }
+  },
   sourcemap: isDev
 };
 

@@ -1,13 +1,20 @@
-chrome.runtime.onMessage.addListener((request) => {
+chrome.runtime.onMessage.addListener(async (request) => {
+  const window = await chrome.windows.getCurrent();
+
+  const height = 600;
+  const width = 400;
+
   if (request == "openExtension") {
     chrome.windows.create({
       focused: true,
-      height: 600,
+      height,
+      left: window.width - width,
+      top: 0,
       type: "popup",
       url: "src/pages/popup/index.html",
-      width: 400
+      width
     }, () => {
-      console.log("Opened extension.");
+      console.log("Popup opened.");
     });
   }
 });

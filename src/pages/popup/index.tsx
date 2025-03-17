@@ -1,5 +1,5 @@
 import Popup from "@/pages/popup/Popup";
-import "@/pages/popup/index.css";
+// import "@/pages/popup/index.css";
 import "@/assets/styles/tailwind.css";
 import { createRoot } from "react-dom/client";
 
