@@ -66,7 +66,7 @@ const Banner: FC<BannerProps> = ({ text }) => {
                   Footprint
                 </div>
                 <div className="text-token-text-secondary">
-                  You have emitted 0.0 kg of CO2 in this conversation. Token count =
+                  You have emitted 0.0 kg of CO2 in this conversation. Token count:
                   {" "}
                   {tokens}
                   .
@@ -85,11 +85,6 @@ const Banner: FC<BannerProps> = ({ text }) => {
   );
 };
 
-const findSearchContainer = () => {
-  const container = document.querySelector("[class='group relative z-[1] flex w-full items-center']");
-  return container;
-};
-
 const observer = new MutationObserver(() => {
   injectBanner();
 });
@@ -103,6 +98,7 @@ const createBanner = (container: Element, text: string) => {
   createRoot(pluginDiv).render(<Banner text={text} />);
 };
 
+const containerQuery = "[class='group relative z-[1] flex w-full items-center']";
 const injectBanner = () => {
   const text = fetchConversations();
 
@@ -121,7 +117,7 @@ const injectBanner = () => {
   }
 
   // create new banner
-  const container = findSearchContainer();
+  const container = document.querySelector(containerQuery);
   if (container) {
     createBanner(container, text);
   }
