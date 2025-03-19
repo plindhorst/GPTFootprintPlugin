@@ -26,5 +26,13 @@
       "js": ["src/pages/content/banner.tsx"]
     }
   ],
-  "devtools_page": "src/pages/devtools/index.html"
+  "devtools_page": "src/pages/devtools/index.html",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "logo.png"
+      ],
+      "matches": ["http://chatgpt.com/*", "https://chatgpt.com/*"]
+    }
+  ]
 }

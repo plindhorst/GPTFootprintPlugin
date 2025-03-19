@@ -1,5 +1,5 @@
 import { EXTENSION_PREFIX } from "@/assets/constants";
-import { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import "@/assets/styles/tailwind.css";
 import { createRoot } from "react-dom/client";
 
@@ -26,8 +26,20 @@ const fetchConversations = () => {
 };
 
 const Banner = () => {
+  const [isVisible, setIsVisible] = useState(true); 
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
   const handleClick = () => {
     chrome.runtime.sendMessage("openExtension");
+  };
+
+  const handleClose = () => {
+    setIsVisible(false); // Hide the banner when the close button is clicked
+    setIsButtonVisible(true); // Show the small button after closing the banner
+  };
+
+  const handleShowBanner = () => {
+    setIsVisible(true); // Show the banner when the small button is clicked
+    setIsButtonVisible(false); // Hide the small button
   };
 
   const ref = useRef(null);
@@ -43,6 +55,25 @@ const Banner = () => {
       };
     }
   }, []);
+
+  if (!isVisible) {
+    return (
+      // The small round button that appears when the banner is closed
+      isButtonVisible && (
+        <button
+        onClick={handleShowBanner}
+        className="fixed bottom-4 right-4 p-3 rounded-full bg-blue-500 text-white shadow-md hover:bg-blue-600 focus:outline-none"
+        aria-label="Show banner"
+      >
+        <img
+          src={chrome.runtime.getURL("logo.png")}  // Path to your image
+          alt="Show banner"
+          className="w-6 h-6" // You can adjust the width and height to fit your design
+        />
+        </button>
+      )
+    );
+  }
 
   return (
     <div className="relative size-full">
@@ -65,6 +96,16 @@ const Banner = () => {
               <div className="flex shrink-0 gap-2 md:pb-0">
                 <button className="btn relative btn-primary shrink-0" ref={ref}>
                   <div className="flex items-center justify-center">More info</div>
+                </button>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                <button data-testid="close-button" className="flex h-8 w-8 items-center justify-center rounded-full bg-transparent hover:bg-token-main-surface-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-token-text-quaternary focus-visible:ring-offset-1 focus-visible:ring-offset-transparent dark:hover:bg-token-main-surface-tertiary" 
+                  aria-label="Close" 
+                  onClick={handleClose}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-md">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.63603 5.63604C6.02656 5.24552 6.65972 5.24552 7.05025 5.63604L12 10.5858L16.9497 5.63604C17.3403 5.24552 17.9734 5.24552 18.364 5.63604C18.7545 6.02657 18.7545 6.65973 18.364 7.05025L13.4142 12L18.364 16.9497C18.7545 17.3403 18.7545 17.9734 18.364 18.364C17.9734 18.7545 17.3403 18.7545 16.9497 18.364L12 13.4142L7.05025 18.364C6.65972 18.7545 6.02656 18.7545 5.63603 18.364C5.24551 17.9734 5.24551 17.3403 5.63603 16.9497L10.5858 12L5.63603 7.05025C5.24551 6.65973 5.24551 6.02657 5.63603 5.63604Z" fill="currentColor">
+                    </path>
+                  </svg>
                 </button>
               </div>
             </div>
