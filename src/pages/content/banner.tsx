@@ -119,3 +119,9 @@ try {
 } catch (e) {
   console.error(e);
 }
+
+function countTokens(text: String) {
+  // Match camelCase, full words, numbers, and punctuation separately
+  const matches = text.match(/([A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+|[^\s\w]+|[^\s\w])/g);
+  return matches.length;
+}
