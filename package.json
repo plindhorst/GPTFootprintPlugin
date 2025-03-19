@@ -1,7 +1,7 @@
 {
-  "name": "chatgpt-footprint",
+  "name": "greenchat",
   "version": "0.1",
-  "description": "ChatGPT (carbon) footprint plugin.",
+  "description": "GreenChat is a plugin that estimates the CO2 emissions of ChatGPT conversations to raise awareness about AI's environmental impact.",
   "private": true,
   "scripts": {
     "build": "vite build --config vite.config.chrome.ts",
