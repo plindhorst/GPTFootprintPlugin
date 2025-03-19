@@ -4,8 +4,22 @@ import "@/assets/styles/tailwind.css";
 import { createRoot } from "react-dom/client";
 
 const bannerId = `${EXTENSION_PREFIX}-banner`;
-
 const pluginClass = "bottom-full left-0 right-0 z-20";
+
+const fetchConversations = () => {
+  const chats = document.querySelectorAll("div[data-message-author-role=\"assistant\"], div[data-message-author-role=\"user\"]");
+  const _numberOfChats = chats.length;
+  const texts = [];
+
+  chats.forEach((chat, _idx) => {
+    const text = chat.textContent.trim();
+    texts.push(text);
+    // console.log(idx, text);
+  });
+
+  console.log(texts.join("\n"));
+  return texts.join("\n");
+};
 
 const Banner = () => {
   const handleClick = () => {
@@ -57,21 +71,15 @@ const Banner = () => {
   );
 };
 
-const findAdjacent = () => {
+const findSearchContainer = () => {
   const container = document.querySelector("[class='group relative z-[1] flex w-full items-center']");
   return container;
-};
-
-const _findParent = () => {
-  const chats = document.querySelectorAll(".group\\/conversation-turn");
-  const lastChat = chats[chats.length - 1];
-
-  return lastChat;
 };
 
 // let lastURL = window.location.href;
 
 const observer = new MutationObserver(() => {
+  fetchConversations();
   injectPluginDiv();
 });
 
@@ -85,7 +93,7 @@ const injectPluginDiv = () => {
 
   // lastURL = currentURL;
 
-  const container = findAdjacent();
+  const container = findSearchContainer();
   if (container) {
     const pluginDiv = document.createElement("div");
     pluginDiv.className = pluginClass;
@@ -104,14 +112,17 @@ const originalReplaceState = history.replaceState;
 
 history.pushState = (...args) => {
   originalPushState.apply(this, args);
+  fetchConversations();
   injectPluginDiv();
 };
 
 history.replaceState = (...args) => {
   originalReplaceState.apply(this, args);
+  fetchConversations();
   injectPluginDiv();
 };
 
+window.addEventListener("popstate", fetchConversations);
 window.addEventListener("popstate", injectPluginDiv);
 
 try {
