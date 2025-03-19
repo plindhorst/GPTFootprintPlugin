@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 
 const bannerId = `${EXTENSION_PREFIX}-banner`;
 const pluginClass = "bottom-full left-0 right-0 z-20";
+var tokenCount = 0;
 
 const fetchConversations = () => {
   const chats = document.querySelectorAll("div[data-message-author-role=\"assistant\"], div[data-message-author-role=\"user\"]");
@@ -18,6 +19,9 @@ const fetchConversations = () => {
   });
 
   console.log(texts.join("\n"));
+  tokenCount = countTokens(texts.join("\n"))
+
+  console.log(tokenCount)
   return texts.join("\n");
 };
 
@@ -55,7 +59,7 @@ const Banner = () => {
                   Footprint
                 </div>
                 <div className="text-token-text-secondary">
-                  You have emitted 0.0 kg of CO2 in this conversation.
+                  You have emitted 0.0 kg of CO2 in this conversation. Token Count = {tokenCount}.
                 </div>
               </div>
               <div className="flex shrink-0 gap-2 md:pb-0">
@@ -124,6 +128,8 @@ history.replaceState = (...args) => {
 
 window.addEventListener("popstate", fetchConversations);
 window.addEventListener("popstate", injectPluginDiv);
+window.addEventListener("popstate", Banner);
+
 
 try {
   console.log("Banner loaded");
