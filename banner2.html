@@ -1,0 +1,57 @@
+<div class="absolute bottom-full left-0 right-0 z-20">
+  <div class="relative h-full w-full">
+    <div class="mb-2 flex flex-col gap-3.5 pt-2">
+      <div style="opacity: 1; transform: translateY(0px); will-change: auto">
+        <div
+          class="flex w-full items-start gap-4 rounded-3xl border py-4 pl-5 pr-3 text-sm [text-wrap:pretty] dark:border-transparent lg:mx-auto shadow-xxs md:items-center border-token-border-light bg-token-main-surface-primary text-token-text-primary dark:bg-token-main-surface-secondary"
+        >
+          <div class="flex h-full w-full items-start gap-3 md:items-center">
+            <div
+              class="mt-1.5 flex grow items-start gap-4 md:mt-0 md:flex-row md:items-center md:justify-between md:gap-8 flex-col"
+            >
+              <div class="flex max-w-none flex-col">
+                <div class="font-bold text-token-text-primary">
+                  You've hit the Free plan limit for GPT-4o.
+                </div>
+                <div class="text-token-text-secondary">
+                  <div>
+                    Responses will use another model until your limit resets
+                    after 3:25 PM.
+                  </div>
+                </div>
+              </div>
+              <div class="flex shrink-0 gap-2 pb-1 md:pb-0">
+                <button class="btn relative btn-primary shrink-0">
+                  <div class="flex items-center justify-center">Get Plus</div>
+                </button>
+              </div>
+            </div>
+            <div class="flex shrink-0 items-center gap-2">
+              <button
+                data-testid="close-button"
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-transparent hover:bg-token-main-surface-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-token-text-quaternary focus-visible:ring-offset-1 focus-visible:ring-offset-transparent dark:hover:bg-token-main-surface-tertiary"
+                aria-label="Close"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon-md"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M5.63603 5.63604C6.02656 5.24552 6.65972 5.24552 7.05025 5.63604L12 10.5858L16.9497 5.63604C17.3403 5.24552 17.9734 5.24552 18.364 5.63604C18.7545 6.02657 18.7545 6.65973 18.364 7.05025L13.4142 12L18.364 16.9497C18.7545 17.3403 18.7545 17.9734 18.364 18.364C17.9734 18.7545 17.3403 18.7545 16.9497 18.364L12 13.4142L7.05025 18.364C6.65972 18.7545 6.02656 18.7545 5.63603 18.364C5.24551 17.9734 5.24551 17.3403 5.63603 16.9497L10.5858 12L5.63603 7.05025C5.24551 6.65973 5.24551 6.02657 5.63603 5.63604Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
