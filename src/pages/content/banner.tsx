@@ -5,10 +5,11 @@ import { createRoot } from "react-dom/client";
 
 const bannerId = `${EXTENSION_PREFIX}-banner`;
 const pluginClass = "bottom-full left-0 right-0 z-20";
-var tokenCount = 0;
+let lastText = "";
 
 const fetchConversations = () => {
   const chats = document.querySelectorAll("div[data-message-author-role=\"assistant\"], div[data-message-author-role=\"user\"]");
+  if (!chats) return "";
   const _numberOfChats = chats.length;
   const texts = [];
 
@@ -18,19 +19,25 @@ const fetchConversations = () => {
     // console.log(idx, text);
   });
 
-  console.log(texts.join("\n"));
-  tokenCount = countTokens(texts.join("\n"))
-
-  console.log(tokenCount)
-  return texts.join("\n");
+  // console.log(texts.join("\n"));
+  // console.log("Fetching conversations...");
+  return texts.join("");
 };
 
-const Banner = () => {
+const countTokens = (text: string) => {
+  const matches = text.match(/([A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+|[^\s\w]+|[^\s\w])/g);
+  return matches?.length;
+};
+
+type BannerProps = { text: string };
+const Banner: FC<BannerProps> = ({ text }) => {
   const handleClick = () => {
     chrome.runtime.sendMessage("openExtension");
   };
 
   const ref = useRef(null);
+
+  const tokens = countTokens(text);
 
   useEffect(() => {
     const button = ref.current;
@@ -59,7 +66,10 @@ const Banner = () => {
                   Footprint
                 </div>
                 <div className="text-token-text-secondary">
-                  You have emitted 0.0 kg of CO2 in this conversation. Token Count = {tokenCount}.
+                  You have emitted 0.0 kg of CO2 in this conversation. Token count =
+                  {" "}
+                  {tokens}
+                  .
                 </div>
               </div>
               <div className="flex shrink-0 gap-2 md:pb-0">
@@ -80,31 +90,40 @@ const findSearchContainer = () => {
   return container;
 };
 
-// let lastURL = window.location.href;
-
 const observer = new MutationObserver(() => {
-  fetchConversations();
-  injectPluginDiv();
+  injectBanner();
 });
 
-const injectPluginDiv = () => {
-  // const currentURL = window.location.href;
+const createBanner = (container: Element, text: string) => {
+  const pluginDiv = document.createElement("div");
+  pluginDiv.className = pluginClass;
+  pluginDiv.id = bannerId;
+
+  container.insertAdjacentElement("beforebegin", pluginDiv);
+  createRoot(pluginDiv).render(<Banner text={text} />);
+};
+
+const injectBanner = () => {
+  const text = fetchConversations();
 
   // prevent re-injecting
-  if (document.getElementById(bannerId)) {
+  if (!text || text === lastText) {
     return;
   }
+  lastText = text;
 
-  // lastURL = currentURL;
+  // remove existing banner
+  if (document.getElementById(bannerId)) {
+    const banner = document.getElementById(bannerId);
+    if (banner) {
+      banner.remove();
+    }
+  }
 
+  // create new banner
   const container = findSearchContainer();
   if (container) {
-    const pluginDiv = document.createElement("div");
-    pluginDiv.className = pluginClass;
-    pluginDiv.id = bannerId;
-
-    container.insertAdjacentElement("beforebegin", pluginDiv);
-    createRoot(pluginDiv).render(<Banner />);
+    createBanner(container, text);
   }
 };
 
@@ -116,29 +135,18 @@ const originalReplaceState = history.replaceState;
 
 history.pushState = (...args) => {
   originalPushState.apply(this, args);
-  fetchConversations();
-  injectPluginDiv();
+  injectBanner();
 };
 
 history.replaceState = (...args) => {
   originalReplaceState.apply(this, args);
-  fetchConversations();
-  injectPluginDiv();
+  injectBanner();
 };
 
-window.addEventListener("popstate", fetchConversations);
-window.addEventListener("popstate", injectPluginDiv);
-window.addEventListener("popstate", Banner);
-
+window.addEventListener("popstate", injectBanner);
 
 try {
-  console.log("Banner loaded");
+  console.log("Loaded banner script.");
 } catch (e) {
   console.error(e);
-}
-
-function countTokens(text: String) {
-  // Match camelCase, full words, numbers, and punctuation separately
-  const matches = text.match(/([A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+|[^\s\w]+|[^\s\w])/g);
-  return matches.length;
 }
