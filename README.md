@@ -1,6 +1,6 @@
 <div align="center">
 <img src="public/icon-128.png" alt="logo"/>
-<h1>ChatGPT Footprint Plugin</h1>
+<h1>GreenChat</h1>
 
 </div>
 
