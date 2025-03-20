@@ -17,7 +17,7 @@ const localise = false;
 export const baseManifest = {
   ...manifest,
   version: pkg.version,
-  ...(isDev ? devManifest : {} as ManifestV3Export),
+  ...(isDev ? devManifest : {} as ManifestV3),
   ...(localise
     ? {
         default_locale: "en",

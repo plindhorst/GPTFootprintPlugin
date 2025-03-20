@@ -1,15 +1,21 @@
+/* eslint-disable import-x/no-named-as-default-member */
 import js from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
-// import * as mdx from "eslint-plugin-mdx";
+import tsParser from "@typescript-eslint/parser";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import importX from "eslint-plugin-import-x";
 import perfectionist from "eslint-plugin-perfectionist";
 import react from "eslint-plugin-react";
-import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 import ts from "typescript-eslint";
 
+const _files = ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx,mdx}"];
+const _tsFiles = ["**/*.ts", "**/*.tsx", "**/*.mtsx"];
 // import tailwind from 'eslint-plugin-tailwindcss';
 
-const style = stylistic.configs.customize({
+const customise = stylistic.configs.customize;
+
+const style = customise({
   blockSpacing: true,
   braceStyle: "1tbs",
   commaDangle: "never",
@@ -22,82 +28,36 @@ const style = stylistic.configs.customize({
 
 export default ts.config(
   {
-    extends: [js.configs.recommended, ...ts.configs.recommended],
-    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"]
+    ignores: ["node_modules/**/*", "dist*/**/*", ".next/**/*", ".vscode/**/*"]
+  },
+  style,
+  perfectionist.configs["recommended-natural"],
+  react.configs.flat["jsx-runtime"],
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
+  js.configs.recommended,
+  ts.configs.strictTypeChecked,
+  {
+    // disable type-aware linting on JS files
+    extends: [ts.configs.disableTypeChecked],
+    files: ["**/*.js"]
   },
   {
-    plugins: {
-      "unused-imports": unusedImports
-    },
     rules: {
-      "@typescript-eslint/no-unused-vars": "off",
-      "no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
-      "unused-imports/no-unused-vars": [
-        "warn",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          args: "after-used",
+          args: "all",
           argsIgnorePattern: "^_",
-          vars: "all",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          ignoreRestSiblings: true,
           varsIgnorePattern: "^_"
         }
-      ]
-    } },
-  {
-    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx,mdx}"],
-    ...react.configs.flat["jsx-runtime"],
-    rules: {
-      "react/jsx-uses-vars": "error"
-    }
-  },
-  {
-    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
-    languageOptions: {
-      globals: {
-        ...globals.serviceworker,
-        ...globals.node,
-        ...globals.browser
-      }
-    }
-  },
-  // {
-  //   files: ["**/*.mdx"],
-  //   ...mdx.flat,
-  //   // optional, if you want to lint code blocks at the same
-  //   processor: mdx.createRemarkProcessor({
-  //     lintCodeBlocks: true
-  //   })
-  // },
-  // {
-  //   files: ["**/*.mdx"],
-  //   ...mdx.flatCodeBlocks,
-  //   rules: {
-  //     ...mdx.flatCodeBlocks.rules
-  //     // // if you want to override some rules for code blocks
-  //     // 'no-var': 'error',
-  //     // 'prefer-const': 'error',
-  //   }
-  // },
-
-  {
-    ...style,
-    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx,mdx}"]
-  },
-  {
-    files: ["**/*.mdx"],
-    rules: {
-      "@stylistic/indent": "off",
-      "@stylistic/jsx-closing-bracket-location": "off",
-      "@stylistic/jsx-one-expression-per-line": "off",
-      "@stylistic/jsx-tag-spacing": "off",
-      "@stylistic/max-statements-per-line": "off",
-      "@stylistic/no-multi-spaces": "off",
-      "@stylistic/semi": "off"
-    }
-  },
-  perfectionist.configs["recommended-natural"],
-  {
-    rules: {
+      ],
+      "import-x/no-unresolved": "error",
       "perfectionist/sort-named-exports": [
         "error",
         {
@@ -106,16 +66,41 @@ export default ts.config(
           order: "asc",
           type: "natural"
         }
-      ]
+      ],
+      "react/jsx-uses-vars": "error"
+    }
+  },
+  {
+    languageOptions: {
+      globals: {
+        ...globals.serviceworker,
+        ...globals.node,
+        ...globals.browser
+      },
+      parser: tsParser,
+      parserOptions: {
+        allowDefaultProject: ["*.js"],
+        project: "tsconfig.json",
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
     }
   },
   // ...tailwind.configs['flat/recommended'],
   {
     settings: {
-      react: {
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          alwaysTryTypes: true // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+          // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
+          // project: 'tsconfig.json',
+        })
+      ],
+      "react": {
         version: "detect"
       },
-      tailwindcss: {
+      "tailwindcss": {
         // These are the default values but feel free to customize
         callees: ["classnames", "clsx", "ctl", "cx", "cva", "cn"],
         classRegex: "^class(Name)?$", // can be modified to support custom attributes. E.g. "^tw$" for `twin.macro`
@@ -133,8 +118,5 @@ export default ts.config(
         whitelist: []
       }
     }
-  },
-  {
-    ignores: ["node_modules/**/*", "dist*/**/*", ".next/**/*", ".vscode/**/*"]
   }
 );
