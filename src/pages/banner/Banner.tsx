@@ -1,5 +1,5 @@
 import { EXTENSION_PREFIX } from "@/assets/constants";
-import { countTokens } from "@/utils";
+import { countTokens, getURL } from "@/utils";
 import { FC, useState } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -21,41 +21,36 @@ const Banner: FC<BannerProps> = ({ text }) => {
     chrome.runtime.sendMessage("openExtension").catch(console.error);
   };
 
-  const [isVisible, setIsVisible] = useState(true);
-  const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
 
   const handleClose = () => {
-    setIsVisible(false); // Hide the banner when the close button is clicked
-    setIsButtonVisible(true); // Show the small button after closing the banner
+    setIsClosed(true); // hide banner when close button is clicked
   };
 
   const handleShowBanner = () => {
-    setIsVisible(true); // Show the banner when the small button is clicked
-    setIsButtonVisible(false); // Hide the small button
+    setIsClosed(false); // show banner when the small button is clicked
   };
 
   // const ref = useRef<HTMLButtonElement | null>(null);
 
   const tokens = countTokens(text);
 
-  if (!isVisible) {
-    return (
-      // The small round button that appears when the banner is closed
-      isButtonVisible && (
-        <button
-          aria-label="Show banner"
-          className="fixed bottom-4 right-4 p-3 rounded-full bg-blue-500 text-white shadow-md hover:bg-blue-600 focus:outline-none"
-          onClick={handleShowBanner}
-        >
-          <img
-            alt="Show banner"
-            className="w-6 h-6" // You can adjust the width and height to fit your design
-            src={chrome.runtime.getURL("logo.png")} // Path to your image
-          />
-        </button>
-      )
-    );
-  }
+  // small round button that appears when the banner is closed
+  const Button = (
+    <button
+      aria-label="Show banner"
+      className="fixed bottom-16 right-4 p-3 btn btn-primary rounded-full shadow-md h focus:outline-none"
+      onClick={handleShowBanner}
+    >
+      <img
+        alt="Show banner"
+        className="w-6 h-6 filter saturate-100 brightness-0"
+        src={getURL("logo.png")}
+      />
+    </button>
+  );
+
+  if (isClosed) return Button;
 
   return (
     <div className="relative size-full">
@@ -78,12 +73,10 @@ const Banner: FC<BannerProps> = ({ text }) => {
                   .
                 </div>
               </div>
-              <div className="flex shrink-0 gap-2 md:pb-0">
-                <button className="btn relative btn-primary shrink-0">
-                  <div className="flex items-center justify-center" onClick={handleClick}>More info</div>
-                </button>
-              </div>
               <div className="flex shrink-0 items-center gap-2">
+                <button className="btn relative btn-primary shrink-0" onClick={handleClick}>
+                  <div className="flex items-center justify-center">More info</div>
+                </button>
                 <button
                   aria-label="Close"
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-transparent hover:bg-token-main-surface-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-token-text-quaternary focus-visible:ring-offset-1 focus-visible:ring-offset-transparent dark:hover:bg-token-main-surface-tertiary"

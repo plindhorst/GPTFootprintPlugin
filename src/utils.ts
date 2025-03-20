@@ -21,4 +21,6 @@ const getText = () => {
   return texts.join("");
 };
 
-export { countTokens, getText };
+const getURL = (url: string) => chrome.runtime.getURL(url);
+
+export { countTokens, getText, getURL };
