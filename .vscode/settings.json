@@ -7,6 +7,7 @@
     "**/deps": true,
     "**/node_modules": true
   },
+  "editor.suggest.insertMode": "replace",
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
   "typescript.preferences.importModuleSpecifier": "non-relative",
@@ -16,9 +17,9 @@
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "javascript.validate.enable": false,
+  "javascript.validate.enable": true,
   "javascript.format.enable": false,
-  "typescript.validate.enable": false,
+  "typescript.validate.enable": true,
   "typescript.format.enable": false,
   "[javascript]": {
     "editor.tabSize": 2,
