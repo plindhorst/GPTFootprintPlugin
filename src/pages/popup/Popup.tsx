@@ -1,25 +1,36 @@
-import logo from "../../assets/img/logo.png";
+import logo from "../../assets/img/logo.png"; 
+import waterIcon from "../../assets/img/water.png"; 
+import carIcon from "../../assets/img/car.png";
+import bulbIcon from "../../assets/img/bulb.png";
 
 const Popup = () => (
   <div className="relative text-center size-full min-h-[600px] min-w-[400px] p-3 overflow-hidden">
     <header className="flex items-center justify-center gap-3">
       <img alt="logo" className="h-10 w-10 pointer-events-none" src={logo} />
-      <h1 className="text-2xl font-bold">ChatGPT Footprint Plugin</h1>
+      <h1 className="text-2xl font-bold">GreenChat</h1>
     </header>
 
-    <div className="mt-6 text-left px-2">
+    <div className="mt-6 text-left px-4">
       <h2 className="text-xl font-semibold mb-2">
         Your chat footprint is equivalent to:
       </h2>
-      <ul className="list-disc list-inside text-white">
-        <li>10 litres of water used</li>
-        <li>50 km driven in a car</li>
-        <li>400 hours of light bulb use</li>
+      <ul className="space-y-3">
+        <li className="flex items-center gap-3 text-white">
+          <img src={waterIcon} alt="Water" className="h-6 w-6" />
+          <span>10 litres of water used</span>
+        </li>
+        <li className="flex items-center gap-3 text-white">
+          <img src={carIcon} alt="Car" className="h-6 w-6" />
+          <span>50 km driven in a car</span>
+        </li>
+        <li className="flex items-center gap-3 text-white">
+          <img src={bulbIcon} alt="Light Bulb" className="h-6 w-6" />
+          <span>400 hours of light bulb use</span>
+        </li>
       </ul>
 
       <p className="mt-4 text-sm text-gray-300 italic">
-        Using search engines or online encyclopedias for basic queries can
-        reduce energy consumption and help lower your carbon footprint.
+        Using search engines or online encyclopedias for basic queries can reduce energy consumption and help lower your carbon footprint.
       </p>
     </div>
 
