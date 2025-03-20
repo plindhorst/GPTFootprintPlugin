@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["http://chatgpt.com/*", "https://chatgpt.com/*"],
-      "js": ["src/pages/content/banner.tsx"]
+      "js": ["src/pages/content/index.tsx"]
     }
   ],
   "devtools_page": "src/pages/devtools/index.html"
