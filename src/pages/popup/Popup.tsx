@@ -1,21 +1,12 @@
-import { useEffect, useState } from "react";
 import logo from "../../assets/img/logo.png"; 
 import waterIcon from "../../assets/img/water.png"; 
 import carIcon from "../../assets/img/car.png";
 import bulbIcon from "../../assets/img/bulb.png";
 
 const Popup = () => {
-  const [tokens, setTokens] = useState(0); // State to store received tokens
 
-  useEffect(() => {
-    // Listen for messages from Banner.tsx
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if (message.action === "openExtension" && message.tokens !== undefined) {
-        console.log("Received token count:", message.tokens);
-        setTokens(message.tokens); // Update state with received tokens
-      }
-    });
-  }, []);
+  const params = new URLSearchParams(window.location.search);
+  const tokenData = params.get("tokens");
 
   return (
     <div className="relative text-center size-full min-h-[600px] min-w-[400px] p-3 overflow-hidden">
@@ -48,7 +39,7 @@ const Popup = () => {
         </p>
 
         <p className="mt-2 text-sm text-gray-400">
-          Token count: <span className="font-bold">{tokens}</span>
+          Token count: <span className="font-bold">{ tokenData }</span>
         </p>
       </div>
 

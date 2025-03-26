@@ -21,9 +21,10 @@ const Banner: FC<BannerProps> = ({ text }) => {
   const tokens = countTokens(text);
 
   const handleClick = () => {
-    console.log(tokens);
-  chrome.runtime.sendMessage({ action: "openExtension", tokens })
-    .catch(console.error);
+      chrome.runtime.sendMessage({
+    type: "openExtension",
+    tokens,
+  }).catch(console.error);
   };
 
   const [isVisible, setIsVisible] = useState(true);
