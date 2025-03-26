@@ -72,7 +72,15 @@ const Banner: FC<BannerProps> = ({ text }) => {
                   Footprint
                 </div>
                 <div className="text-token-text-secondary">
-                  You have emitted 0.0 kg of CO2 in this conversation. Token count:
+                  You have emitted between
+                  {" "}
+                  {tokens * 0.0002574}
+                  {" "}
+                  and
+                  {" "}
+                  {tokens * 0.0002145}
+                  {" "}
+                  g of CO2 in this conversation. Token count:
                   {" "}
                   {tokens}
                   .
