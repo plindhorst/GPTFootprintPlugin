@@ -9,7 +9,7 @@ let lastText = "";
 //   injectBanner();
 // });
 
-const containerQuery = "[class='group relative z-[1] flex w-full items-center']";
+const containerQuery = "[class='relative z-[1] flex max-w-full flex-1 flex-col h-full']";
 const injectBanner = () => {
   const text = getText();
 
