@@ -17,8 +17,14 @@ export const createBanner = (container: Element, text: string) => {
 
 type BannerProps = { text: string };
 const Banner: FC<BannerProps> = ({ text }) => {
+
+  const tokens = countTokens(text);
+
   const handleClick = () => {
-    chrome.runtime.sendMessage("openExtension").catch(console.error);
+      chrome.runtime.sendMessage({
+    type: "openExtension",
+    tokens,
+  }).catch(console.error);
   };
 
   const [isVisible, setIsVisible] = useState(true);
@@ -36,7 +42,7 @@ const Banner: FC<BannerProps> = ({ text }) => {
 
   // const ref = useRef<HTMLButtonElement | null>(null);
 
-  const tokens = countTokens(text);
+  
 
   if (!isVisible) {
     return (
